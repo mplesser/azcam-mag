@@ -1,6 +1,6 @@
 # azcam-mag
 
-*azcam-mag* is an *azcam* extension for OCIW (ITL version) Magellan CCD controllers.
+*azcam-mag* is an *azcam* extension for OCIW Magellan CCD controllers (ITL version).
 
 ## Installation
 
