@@ -2,11 +2,12 @@
 Contains the ControllerMag class.
 """
 
-import time
 import os
+import time
 
 import azcam
 from azcam.controllers.controller import Controller
+
 from .camera_server import CameraServerInterface
 
 """

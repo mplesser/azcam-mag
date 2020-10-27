@@ -4,8 +4,8 @@ Allows sending UDP register request to the Azcam Monitor application
 Allows sending and receiving broadcast ID request
 """
 
-import time
 import socket
+import time
 
 import azcam
 
