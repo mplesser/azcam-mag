@@ -7,7 +7,7 @@ import os
 
 import azcam
 from azcam.controllers.controller import Controller
-from azcam.controllers.camera_server import CameraServerInterface
+from .camera_server import CameraServerInterface
 
 """
 FPGA system: Fill image buffer command
