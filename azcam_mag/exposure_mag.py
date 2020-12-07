@@ -37,9 +37,9 @@ class ExposureMag(Exposure):
         try:
             shutterstate = self.shutter_dict[self.image_type.lower()]
         except KeyError:
-            shutterstate = "open"  # other types are comps, so open shutter
+            shutterstate = 1  # other types are comps, so open shutter
 
-        if shutterstate == "open":
+        if shutterstate:
             azcam.api.controller.set_shutter(1)
 
         # start exposure
@@ -78,7 +78,7 @@ class ExposureMag(Exposure):
         else:
             self.exposure_flag = azcam.db.exposureflags["READ"]
 
-        if shutterstate == "open":
+        if shutterstate:
             azcam.api.controller.set_shutter(0)
 
         if self.image_type.lower() != "zero":

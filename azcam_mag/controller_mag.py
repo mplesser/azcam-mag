@@ -222,7 +222,7 @@ class ControllerMag(Controller):
 
         return
 
-    def set_shutter_state(self, Flag="close"):
+    def set_shutter_state(self, Flag: bool = 0):
         """
         Sets the shutter state during an exposure.
         Flag is:
