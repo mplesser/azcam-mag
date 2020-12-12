@@ -22,9 +22,9 @@ The code below is for example only.
     exposure.image.filetype = azcam.db.filetypes[filetype]
     exposure.display_image = 1
     exposure.image.remote_imageserver_flag = 0
-    exposure.filename.set_name("/azcam/soguider/image.bin")
-    exposure.filename.test_image = 0
-    exposure.filename.root = "image"
+    exposure.set_name("/azcam/soguider/image.bin")
+    exposure.test_image = 0
+    exposure.root = "image"
     exposure.display_image = 0
     exposure.image.make_lockfile = 1
 
