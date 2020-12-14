@@ -151,13 +151,13 @@ class ExposureMag(Exposure):
         self.exposure_flag = azcam.db.exposureflags["WRITING"]
 
         if self.image.remote_imageserver_flag:
-            local_file = self.temp_image_file + "." + self.get_extension(self.filetype)
+            local_file = self.temp_image_file + "." + self.get_extname(self.filetype)
             try:
                 os.remove(local_file)
             except FileNotFoundError:
                 pass
         else:
-            local_file = self.get_name()
+            local_file = self.get_filename()
 
         # wait for image data to be received
         loop = 0
@@ -203,7 +203,7 @@ class ExposureMag(Exposure):
 
         # increment file sequence number if image was written
         if self.save_file:
-            self.increment()
+            self.increment_filenumber()
 
         self.exposure_flag = azcam.db.exposureflags["NONE"]
 
