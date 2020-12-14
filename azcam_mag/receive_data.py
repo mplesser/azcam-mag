@@ -89,9 +89,7 @@ class ReceiveData(object):
                     azcam.api.controller.readout_abort()  # stop ControllerServer
                     break
 
-            getData = self.request_data(
-                reqCnt + 17
-            )  # request data + 17 bytes for data length
+            getData = self.request_data(reqCnt + 17)  # request data + 17 bytes for data length
             len1 = len(getData)
             azcam.log(f"Readout: {self.pixels_remaining:10d} pixels remaining", level=3)
 
@@ -100,9 +98,7 @@ class ReceiveData(object):
                 repCnt = 0
 
                 # store data
-                pixelsreadout = int(
-                    len1 / 2
-                )  # number pixels in this read now available
+                pixelsreadout = int(len1 / 2)  # number pixels in this read now available
 
                 # convert received data to unsigned shorts
                 ImageBufferTemp = numpy.ndarray(
@@ -110,9 +106,7 @@ class ReceiveData(object):
                 )
 
                 # copy the data into TempBuffer
-                BufferTemp[ptrData : ptrData + pixelsreadout] = ImageBufferTemp[
-                    0:pixelsreadout
-                ]
+                BufferTemp[ptrData : ptrData + pixelsreadout] = ImageBufferTemp[0:pixelsreadout]
                 ptrData = ptrData + pixelsreadout
 
                 reqCnt = min(dataSize - dataCnt - 17, self.RecBufferSize - 17)
@@ -220,7 +214,7 @@ class ReceiveData(object):
 
         for AmpPos in range(azcam.api.exposure.image.focalplane.numamps_image):
             self.exposure.image.data[AmpPos] = numpy.linspace(
-                0, 65355, int(iy * ix / self.image.focalplane.numamps_image)
+                0, 65355, int(iy * ix / self.exposure.image.focalplane.numamps_image)
             )
 
         return
