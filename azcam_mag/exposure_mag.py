@@ -30,7 +30,7 @@ class ExposureMag(Exposure):
         """
 
         # start integration
-        self.exposure_flag = azcam.db.exposureflags["EXPOSING"]
+        self.exposure_flag = self.exposureflags["EXPOSING"]
         imagetype = self.image_type.lower()
 
         # do this as some DSP code not work right
@@ -53,12 +53,12 @@ class ExposureMag(Exposure):
         # Mag controller pause/resume not supported but abort is
         if self.exposure_time >= 1.0:
             while self.exposure_time_remaining > 0.15:
-                if self.exposure_flag == azcam.db.exposureflags["ABORT"]:
+                if self.exposure_flag == self.exposureflags["ABORT"]:
                     if self.is_exposure_sequence:
                         azcam.log("Stopping exposure sequence")
                         self.is_exposure_sequence = 0
                         self.exposure_sequence_number = 1
-                        self.exposure_flag = azcam.db.exposureflags["EXPOSING"]
+                        self.exposure_flag = self.exposureflags["EXPOSING"]
                     else:
                         azcam.api.controller.exposure_abort()
                     break
@@ -73,10 +73,10 @@ class ExposureMag(Exposure):
         if imagetype == "zero":
             self.exposure_time = self.exposure_time_saved
         self.exposure_time_remaining = 0
-        if self.exposure_flag == azcam.db.exposureflags["ABORT"]:
+        if self.exposure_flag == self.exposureflags["ABORT"]:
             azcam.log("Integration aborted")
         else:
-            self.exposure_flag = azcam.db.exposureflags["READ"]
+            self.exposure_flag = self.exposureflags["READ"]
 
         if shutterstate:
             azcam.api.controller.set_shutter(0)
@@ -100,7 +100,7 @@ class ExposureMag(Exposure):
         Exposure readout.
         """
 
-        self.exposure_flag = azcam.db.exposureflags["READ"]
+        self.exposure_flag = self.exposureflags["READ"]
 
         imagetype = self.image_type.lower()
 
@@ -121,28 +121,26 @@ class ExposureMag(Exposure):
         time.sleep(t_wait)
 
         self.pixels_remaining = 0
-        if self.exposure_flag != azcam.db.exposureflags["ABORT"]:
-            self.exposure_flag = azcam.db.exposureflags["NONE"]
+        if self.exposure_flag != self.exposureflags["ABORT"]:
+            self.exposure_flag = self.exposureflags["NONE"]
 
         # transfer image data already read from controller
         try:
-            reply = self.receive_data.receive_image_data(
-                self.image.focalplane.numpix_image * 2
-            )
+            reply = self.receive_data.receive_image_data(self.image.focalplane.numpix_image * 2)
         except azcam.AzcamError:
-            self.exposure_flag = azcam.db.exposureflags["ABORT"]
+            self.exposure_flag = self.exposureflags["ABORT"]
 
         self.image.valid = 1  # new
 
         if imagetype == "ramp":
             azcam.api.controller.set_shutter(0)
 
-        if self.exposure_flag == azcam.db.exposureflags["ABORT"]:
+        if self.exposure_flag == self.exposureflags["ABORT"]:
             azcam.log("Readout aborted")
             return ["ABORTED", "Readout aborted"]
         else:
             azcam.log("Readout finished", level=2)
-            self.exposure_flag = azcam.db.exposureflags["NONE"]
+            self.exposure_flag = self.exposureflags["NONE"]
             return
 
     def end(self):
@@ -150,7 +148,7 @@ class ExposureMag(Exposure):
         Completes an exposure by writing file and displaying image.
         """
 
-        self.exposure_flag = azcam.db.exposureflags["WRITING"]
+        self.exposure_flag = self.exposureflags["WRITING"]
 
         if self.image.remote_imageserver_flag:
             local_file = self.temp_image_file + "." + self.get_extname(self.filetype)
@@ -172,12 +170,8 @@ class ExposureMag(Exposure):
         # update controller header with keywords which might have changed
         et = float(int(self.exposure_time_actual * 1000.0) / 1000.0)
         dt = float(int(self.dark_time * 1000.0) / 1000.0)
-        azcam.db.headers["exposure"].set_keyword(
-            "EXPTIME", et, "Exposure time (seconds)", float
-        )
-        azcam.db.headers["exposure"].set_keyword(
-            "DARKTIME", dt, "Dark time (seconds)", float
-        )
+        azcam.db.headers["exposure"].set_keyword("EXPTIME", et, "Exposure time (seconds)", float)
+        azcam.db.headers["exposure"].set_keyword("DARKTIME", dt, "Dark time (seconds)", float)
 
         # write file(s) to disk
         if self.save_file:
@@ -211,6 +205,6 @@ class ExposureMag(Exposure):
         if self.save_file:
             self.increment_filenumber()
 
-        self.exposure_flag = azcam.db.exposureflags["NONE"]
+        self.exposure_flag = self.exposureflags["NONE"]
 
         return
