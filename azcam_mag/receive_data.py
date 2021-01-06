@@ -79,7 +79,10 @@ class ReceiveData(object):
         while (dataCnt < dataSize) and (repCnt < 50):
 
             # check if aborted by user (from abort() - controller.abort()
-            if azcam.api.exposure.exposure_flag == azcam.api.exposure.exposureflags["ABORT"]:
+            if (
+                azcam.api.exposure.exposure_flag
+                == azcam.api.exposure.exposureflags["ABORT"]
+            ):
 
                 # if in a sequence then let this readout finish
                 if self.exposure.is_exposure_sequence:
@@ -89,7 +92,9 @@ class ReceiveData(object):
                     azcam.api.controller.readout_abort()  # stop ControllerServer
                     break
 
-            getData = self.request_data(reqCnt + 17)  # request data + 17 bytes for data length
+            getData = self.request_data(
+                reqCnt + 17
+            )  # request data + 17 bytes for data length
             len1 = len(getData)
             azcam.log(f"Readout: {self.pixels_remaining:10d} pixels remaining", level=3)
 
@@ -98,7 +103,9 @@ class ReceiveData(object):
                 repCnt = 0
 
                 # store data
-                pixelsreadout = int(len1 / 2)  # number pixels in this read now available
+                pixelsreadout = int(
+                    len1 / 2
+                )  # number pixels in this read now available
 
                 # convert received data to unsigned shorts
                 ImageBufferTemp = numpy.ndarray(
@@ -106,7 +113,9 @@ class ReceiveData(object):
                 )
 
                 # copy the data into TempBuffer
-                BufferTemp[ptrData : ptrData + pixelsreadout] = ImageBufferTemp[0:pixelsreadout]
+                BufferTemp[ptrData : ptrData + pixelsreadout] = ImageBufferTemp[
+                    0:pixelsreadout
+                ]
                 ptrData = ptrData + pixelsreadout
 
                 reqCnt = min(dataSize - dataCnt - 17, self.RecBufferSize - 17)
@@ -123,7 +132,10 @@ class ReceiveData(object):
             self.pixels_remaining = 0
             azcam.log("Image data received")
         else:
-            if not azcam.api.exposure.exposure_flag == azcam.api.exposure.exposureflags["ABORT"]:
+            if (
+                not azcam.api.exposure.exposure_flag
+                == azcam.api.exposure.exposureflags["ABORT"]
+            ):
                 s = "ERROR in ReceiveImageData: Received %d of %d bytes" % (
                     dataCnt,
                     dataSize,
