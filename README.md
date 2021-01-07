@@ -4,7 +4,9 @@
 
 ## Installation
 
-Download from github: https://github.com/mplesser/azcam-mag.git.
+`pip install azam-mag`
+
+Or download from github: https://github.com/mplesser/azcam-mag.git.
 
 ## Example Code
 
