@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="azcam-mag",
-    version="21.1.2",
+    version="21.1.3",
     description="azcam extension for OCIW ITL Magellan CCD controllers",
     long_description=long_description,
     long_description_content_type="text/markdown",
