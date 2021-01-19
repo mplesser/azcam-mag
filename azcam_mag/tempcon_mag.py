@@ -18,7 +18,7 @@ class TempConMag(TempCon):
         self.num_temp_reads = 3
         self.control_temperature = self.bad_temp_value  # no active control
 
-        self.number_sensors = 1
+        self.number_sensors = 2
 
         return
 
