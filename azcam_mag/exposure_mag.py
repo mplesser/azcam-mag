@@ -126,9 +126,7 @@ class ExposureMag(Exposure):
 
         # transfer image data already read from controller
         try:
-            reply = self.receive_data.receive_image_data(
-                self.image.focalplane.numpix_image * 2
-            )
+            reply = self.receive_data.receive_image_data(self.image.focalplane.numpix_image * 2)
         except azcam.AzcamError:
             self.exposure_flag = self.exposureflags["ABORT"]
 
@@ -152,7 +150,7 @@ class ExposureMag(Exposure):
 
         self.exposure_flag = self.exposureflags["WRITING"]
 
-        if self.image.remote_imageserver_flag:
+        if self.remote_imageserver_flag:
             local_file = self.temp_image_file + "." + self.get_extname(self.filetype)
             try:
                 os.remove(local_file)
@@ -172,12 +170,8 @@ class ExposureMag(Exposure):
         # update controller header with keywords which might have changed
         et = float(int(self.exposure_time_actual * 1000.0) / 1000.0)
         dt = float(int(self.dark_time * 1000.0) / 1000.0)
-        azcam.db.headers["exposure"].set_keyword(
-            "EXPTIME", et, "Exposure time (seconds)", float
-        )
-        azcam.db.headers["exposure"].set_keyword(
-            "DARKTIME", dt, "Dark time (seconds)", float
-        )
+        azcam.db.headers["exposure"].set_keyword("EXPTIME", et, "Exposure time (seconds)", float)
+        azcam.db.headers["exposure"].set_keyword("DARKTIME", dt, "Dark time (seconds)", float)
 
         # write file(s) to disk
         if self.save_file:
@@ -193,8 +187,9 @@ class ExposureMag(Exposure):
             # set flag that image now written to disk
             self.image.written = 1
 
-            if self.image.remote_imageserver_flag:
-                self.image.send_image(local_file)
+            if self.remote_imageserver_flag:
+                azcam.log("Sending image")
+                self.sendimage.send_image(local_file)
 
         # image data and file are now ready
         self.image.toggle = 1
