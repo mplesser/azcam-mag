@@ -29,20 +29,20 @@ class ControllerMag(Controller):
 
         super().__init__(obj_id, name)
 
-        #: selected video channel(s) for switched systems
+        # selected video channel(s) for switched systems
         self.video_select = 0
-        #: video gain flag
+        # video gain flag
         self.video_gain = 1
-        #: True to generate fake ramp data instead of real data
+        # True to generate fake ramp data instead of real data
         self.synthetic_data = 0
 
-        #: True to lower voltages when integrating
+        # True to lower voltages when integrating
         self.lower_voltages = 0
 
-        #: True if image data from ControllserServer is binary (not a file)
+        # True if image data from ControllserServer is binary (not a file)
         self.binary_image_data = 1
 
-        #: True to use read lock in ControllerServer
+        # True to use read lock in ControllerServer
         self.use_read_lock = 0
 
         self.controller_class = "mag"
@@ -316,9 +316,7 @@ class ControllerMag(Controller):
         """
 
         self.camserver.load_file(BoardNumber, filename)
-        self.header.set_keyword(
-            "DSPFILE", os.path.basename(filename), "DSP code filename", str
-        )
+        self.header.set_keyword("DSPFILE", os.path.basename(filename), "DSP code filename", str)
 
         return
 
