@@ -187,9 +187,9 @@ class ExposureMag(Exposure):
             # set flag that image now written to disk
             self.image.written = 1
 
-            if self.remote_imageserver_flag:
+            if self.send_image:
                 azcam.log("Sending image")
-                self.sendimage.send_image(local_file)
+                azcam.api.sendimage.sendimage(local_file)
 
         # image data and file are now ready
         self.image.toggle = 1
