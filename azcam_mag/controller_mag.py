@@ -25,9 +25,9 @@ class ControllerMag(Controller):
     The controller class for Magellan controllers.
     """
 
-    def __init__(self, obj_id="controller", description=None):
+    def __init__(self, tool_id="controller", description=None):
 
-        super().__init__(obj_id, description)
+        super().__init__(tool_id, description)
 
         # selected video channel(s) for switched systems
         self.video_select = 0
@@ -52,11 +52,6 @@ class ControllerMag(Controller):
         self.timing_file = ""
 
         self.camserver = CameraServerInterface()
-
-        # new for Arduino
-        # self.power = WebPowerController()
-
-    # *** reset ***
 
     def reset(self):
         """

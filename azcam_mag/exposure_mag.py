@@ -16,9 +16,9 @@ class ExposureMag(Exposure):
     Defines the exposure class for Magellan controllers which makes an exposure.
     """
 
-    def __init__(self, obj_id="exposure", description=None):
+    def __init__(self, tool_id="exposure", description=None):
 
-        super().__init__(obj_id, description)
+        super().__init__(tool_id, description)
 
         self.receive_data = ReceiveData(self)
         self.exp_start = 0
